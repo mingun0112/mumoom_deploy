@@ -6,9 +6,9 @@ export default function Dashboard() {
             <div className="absolute inset-0">
                 <Map />
             </div>
-            {/* <div className="fixed bottom-0 left-0 right-0 z-10">
+            <div className="fixed bottom-0 left-0 right-0 z-10">
                 <Nav />
-            </div> */}
+            </div>
         </div>
     )
 }
