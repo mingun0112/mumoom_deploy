@@ -43,13 +43,13 @@ export default function CustomeMap() {
                     onCameraChanged={(ev: MapCameraChangedEvent) =>
                         console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
                     }>
-                    {/* {center && (
-                            <AdvancedMarker
-                                key="current-location"
-                                position={center}>
-                                <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-                            </AdvancedMarker>
-                        )} */}
+                    {center && (
+                        <AdvancedMarker
+                            key="current-location"
+                            position={center}>
+                            <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+                        </AdvancedMarker>
+                    )}
                 </Map>)}
             </APIProvider>
         </div>
