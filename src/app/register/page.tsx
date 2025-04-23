@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 
 export default function RegisterPage() {
+
+    const router = useRouter();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -19,7 +22,7 @@ export default function RegisterPage() {
         //     return;
         // }
 
-        const res = await fetch(`/api/joinProc`, {
+        const res = await fetch(`/api/join`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,14 +33,12 @@ export default function RegisterPage() {
 
         if (res.ok) {
             setSuccessMsg('회원가입 성공! 로그인 페이지로 이동합니다.');
-            // setTimeout(() => router.push('/login'), 1500);
+            // router.push('/dashboard')
+            setTimeout(() => router.push('/login'), 1500);
         } else {
             const data = await res.json();
             setErrorMsg(data.error || '회원가입 실패');
         }
-    };
-    const handleClick = () => {
-        console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/joinProc`);
     };
 
     return (
@@ -83,7 +84,6 @@ export default function RegisterPage() {
                         />
                     </div> */}
                     <button
-                        onClick={handleClick}
                         type="submit"
                         className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
                     >
