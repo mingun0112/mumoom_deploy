@@ -10,7 +10,23 @@ import {
 import type {Marker} from '@googlemaps/markerclusterer';
 
 
+interface resDto {
+    poi: resPoi[];
+}
 
+interface resPoi {
+    latitude: number;
+    longitude: number;
+    placeTitle: string;
+    placeImageURL: string;
+    userid: number;
+}
+
+interface Poi {
+    key: string;
+    location: google.maps.LatLngLiteral;
+    title: string;
+}
 
 const distanceInKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // km
@@ -26,7 +42,9 @@ const distanceInKm = (lat1: number, lon1: number, lat2: number, lon2: number) =>
 
 
 export async function loadPlace(lat: number, lng: number) {
+
     const res = await fetch(`/api/load_location?lat=${lat}&lng=${lng}`, {
+    // const res = await fetch(`/api/load_location?lat=3&lng=49.22`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -35,8 +53,9 @@ export async function loadPlace(lat: number, lng: number) {
     });
 
     if (res.ok){
-        console.log("hi");
+        // console.log("hi");
         const data = await res.json();
+        console.log("res: ", data);
         return data;
     }
     return "error";
@@ -46,7 +65,6 @@ export async function loadPlace(lat: number, lng: number) {
 
 export default function CustomeMap() {
 
-    type Poi ={ key: string, location: google.maps.LatLngLiteral }
 
 
     const [userCenter, setUserCenter] = useState<{ lat: number, lng: number } | null>(null);
@@ -56,35 +74,59 @@ export default function CustomeMap() {
 
     useEffect(() => {
         if (!navigator.geolocation) {
-            setTextContent("browser doesn't offers this function")
+            setTextContent("browser doesn't offers this function");
         } else {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    setTextContent("현재 위치를 가져옴");
-                    setUserCenter(pos);
-                    setLastPosition(pos);  // 최초 위치 저장
-
-                },
-                () => {
-                    setTextContent("현재 위치를 가져올 수 없음");
-                }
-            );
+            const getCurrentLocation = async () => {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        setTextContent("현재 위치를 가져옴");
+                        setUserCenter(pos);
+                        setLastPosition(pos); // 최초 위치 저장
+                        try {
+                            const places: resDto = await loadPlace(pos.lat, pos.lng);
+                            console.log(places.poi);
+                            const placepoi: Poi[] = (places.poi || []).map((p: any) => ({
+                                key: Math.random().toString(36).substring(2, 10),
+                                location: { lat: p.latitude, lng: p.longitude },
+                                title: p.placeTitle,
+                            }));
+                            console.log(placepoi);
+                            setPoint(placepoi);
+                            console.log('근처 장소 데이터:', places.poi);
+                            setLastPosition(pos); // 마지막 위치 업데이트
+                        } catch (error) {
+                            console.error('장소 로딩 실패:', error);
+                        }
+                    },
+                    () => {
+                        setTextContent("현재 위치를 가져올 수 없음");
+                    }
+                );
+            };
+            getCurrentLocation();
         }
-    },[]);
+    }, []);
+
+
     const PoiMarkers = (props: { pois: Poi[] }) => {
         const map = useMap();
         const [markers, setMarkers] = useState<{[key: string]: Marker}>({});
         const clusterer = useRef<MarkerClusterer | null>(null);
+        const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
+
 
         // Initialize MarkerClusterer, if the map has changed
         useEffect(() => {
             if (!map) return;
             if (!clusterer.current) {
                 clusterer.current = new MarkerClusterer({map});
+            }
+            if (!infoWindowRef.current) {
+                infoWindowRef.current = new google.maps.InfoWindow();
             }
         }, [map]);
 
@@ -93,6 +135,7 @@ export default function CustomeMap() {
             clusterer.current?.clearMarkers();
             clusterer.current?.addMarkers(Object.values(markers));
         }, [markers]);
+
 
         const setMarkerRef = (marker: Marker | null, key: string) => {
             if (marker && markers[key]) return;
@@ -111,16 +154,38 @@ export default function CustomeMap() {
 
         return (
             <>
+                <AdvancedMarker
+                    key="center"
+                    position={userCenter}
+                >
+                    <Pin background={'#000'} glyphColor={'#fff'} borderColor={'#fff'} />
+                </AdvancedMarker>
                 {props.pois.map( (poi: Poi) => (
                     <AdvancedMarker
                         key={poi.key}
                         position={poi.location}
+                        // gmpClickable={true}
                         ref={marker => setMarkerRef(marker, poi.key)}
+                        onClick={()=>{
+                            console.log(poi.title)
+                            if (map && infoWindowRef.current) {
+                                const htmlContent = `
+                    <div style="max-width: 200px;">
+                        <h3 style="margin: 0 0 5px;">${poi.title}</h3>
+                        
+                    </div>
+                `;
+                                infoWindowRef.current.setContent(htmlContent);
+                                infoWindowRef.current.setPosition(poi.location);
+                                infoWindowRef.current.open(map);
+                            }
+                        }}
                     >
-                        <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+                        {/*<Pin />*/}
                     </AdvancedMarker>
 
                 ))}
+
             </>
         );
     };
@@ -131,13 +196,17 @@ export default function CustomeMap() {
 
         if (lastPosition) {
             const distance = distanceInKm(lastPosition.lat, lastPosition.lng, newCenter.lat, newCenter.lng);
-            if (distance > 1) {
+            if (distance > 30) {
+                setPoint([]);
                 try {
-                    const places = await loadPlace(newCenter.lat, newCenter.lng);
-                    const placepoi:Poi[] = places.map((p:any)=> ({
+                    const places:resDto = await loadPlace(newCenter.lat, newCenter.lng);
+                    console.log(places.poi);
+                    const placepoi:Poi[] = places.poi.map((p:any)=> ({
                         key:Math.random().toString(36).substring(2, 10),
-                        location:{lat: p.lat, lng: p.lng},
+                        location:{lat: p.latitude, lng: p.longitude},
+                        title:p.placeTitle
                     }));
+                    console.log(placepoi);
                     setPoint(placepoi);
 
                     console.log('근처 장소 데이터:', places);
@@ -160,14 +229,21 @@ export default function CustomeMap() {
                     defaultCenter={userCenter}
                     mapId='b60b691782b3237'
                     onCameraChanged={handleCameraChange}
+                    scaleControl={false}
+                    fullscreenControl={false}
+                    rotateControl={false}
+                    mapTypeControl={false}
+                    zoomControl={false}
+                    streetViewControl={false}
+
                 >
-                    {userCenter && (
-                        <AdvancedMarker
-                            key="current-location"
-                            position={userCenter}>
-                            <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-                        </AdvancedMarker>
-                    )}
+                    {/*{userCenter && (*/}
+                    {/*    <AdvancedMarker*/}
+                    {/*        key="current-location"*/}
+                    {/*        position={userCenter}>*/}
+                    {/*        <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />*/}
+                    {/*    </AdvancedMarker>*/}
+                    {/*)}*/}
                     {point && <PoiMarkers pois={point} />}
                 </Map>)}
             </APIProvider>
