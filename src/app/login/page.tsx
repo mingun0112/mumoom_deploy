@@ -45,7 +45,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
+        <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)] ">
             <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-md px-6 py-8 bg-white bg-opacity-80 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-semibold text-center mb-6">로그인</h1>
                 <form onSubmit={handleLogin}>
