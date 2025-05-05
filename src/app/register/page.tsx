@@ -10,7 +10,7 @@ export default function RegisterPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
@@ -42,62 +42,86 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
-
-            <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-md px-6 py-8 bg-white bg-opacity-80 rounded-lg shadow-lg">
-                <h1 className="text-2xl font-semibold text-center mb-6">회원가입</h1>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">아이디</label>
-                        <input
-                            id="username"
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                            placeholder="아이디를 입력하세요"
-                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">비밀번호</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="비밀번호를 입력하세요"
-                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    {/* <div className="mb-6">
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">비밀번호 확인</label>
-                        <input
-                            id="confirmPassword"
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                            placeholder="비밀번호를 다시 입력하세요"
-                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-                        />
-                    </div> */}
-                    <button
-                        type="submit"
-                        className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600"
-                    >
-                        회원가입
-
-
-                    </button>
-                </form>
-
-                {errorMsg && <p className="text-red-500 text-center mt-4">{errorMsg}</p>}
+        <div className="min-h-screen bg-white flex flex-col items-start justify-start px-4 py-8">
+          <div className="w-full max-w-md space-y-6">
+            {/* 상단 영역 */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <button className="text-3xl font-light text-gray-500">&times;</button>
+                <h2 className="text-2xl font-bold text-gray-800">회원가입</h2>
+                <span className="w-6" /> {/* 자리 맞춤용 */}
+              </div>
+              <hr className="border-black" />
+            </div>
+    
+            {/* 입력 폼 영역 */}
+            <form onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              {/* 이메일 */}
+              <div className="mb-10">
+                <label htmlFor="username" className="block text-sm text-gray-700 mb-1 text-lg mb-4  text-[11pt]" >이메일</label>
+                <div className="flex gap-2">
+                  <input
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(e)=> setUsername(e.target.value)}
+                    required
+                    placeholder="이메일"
+                    className="w-1/2 px-3 py-2 bg-gray-100  h-13 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0E3C56]"
+                  />
+                  <span className="self-center">@</span>
+                  <select className="w-1/2 px-3 py-2 bg-gray-100  h-13  rounded-md focus:outline-none focus:ring-2 focus:ring-[#0E3C56]">
+                    <option>선택</option>
+                    <option>gmail.com</option>
+                    <option>naver.com</option>
+                    <option>daum.net</option>
+                  </select>
+                </div>
+              </div>
+    
+              {/* 비밀번호 */}
+              <div>
+                <label htmlFor="password" className="block text-sm text-gray-700 mb-4  text-[11pt]">비밀번호</label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e)=> setPassword(e.target.value)}
+                  required
+                  className="w-full px-3 py-2   rounded-md focus:outline-none focus:ring-2 focus:ring-[#0E3C56] bg-gray-100 h-13"
+                  placeholder="비밀번호"
+                />
+              </div>
+    
+              {/* 비밀번호 확인 */}
+              <div className = "mb-10">
+              <label htmlFor="confirmPassword" className="block text-sm text-gray-700 mb-4  text-[11pt]">비밀번호 재확인</label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0E3C56] bg-gray-100 h-13"
+                  placeholder="비밀번호 확인"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  6~20자 / 영문 대문자, 소문자, 숫자, 특수문자 중 2가지 이상 조합
+                </p>
+              </div>
+    
+              {/* 가입 버튼 */}
+              <button className="w-full py-2 bg-[#0E3C56] text-white rounded-md hover:bg-[#0c2f45] transition h-15 text-[15pt]">
+                가입하기
+              </button>
+            </div>
+            </form>
+            {errorMsg && <p className="text-red-500 text-center mt-4">{errorMsg}</p>}
                 {successMsg && <p className="text-green-500 text-center mt-4">{successMsg}</p>}
             </div>
 
-
-        </div>
-    );
+          </div>
+       
+      );
 }

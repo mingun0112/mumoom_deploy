@@ -44,46 +44,84 @@ export default function LoginPage() {
         }
     };
 
-    return (
-        <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)] ">
-            <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-md px-6 py-8 bg-white bg-opacity-80 rounded-lg shadow-lg">
-                <h1 className="text-2xl font-semibold text-center mb-6">로그인</h1>
-                <form onSubmit={handleLogin}>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">아이디</label>
-                        <input
-                            id="username"
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                            placeholder="아이디를 입력하세요"
-                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">비밀번호</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="비밀번호를 입력하세요"
-                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    >
-                        로그인
-                    </button>
-                </form>
+  
 
-                {errorMsg && <p className="text-red-500 text-center mt-4">{errorMsg}</p>}
-                {successMsg && <p className="text-green-500 text-center mt-4">{successMsg}</p>}
-            </div>
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-md mx-auto">
+          <div className="mb-15 h-30 flex items-center justify-center bg-gray-100 rounded">
+            <span className="text-gray-600">로고 삽입</span>
+          </div>
+      <form onSubmit={handleLogin}>
+          <div className="space-y-6 ">
+          <div className="flex w-[300px] h-[55px] shadow-md">
+      {/* 왼쪽 아이콘 박스 - 왼쪽 모서리 둥글게 */}
+      <div className="w-12 h-full flex items-center justify-center rounded-l-md bg-[#2D5E7E]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      strokeWidth="1.5" stroke="white" className="w-5 h-5">
+        <path strokeLinecap="round" strokeLinejoin="round"
+            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 
+            2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 
+            19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 
+            0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 
+            4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 
+            2.25 0 0 1-1.07-1.916V6.75"/>
+      </svg>
+      </div>
+
+      {/* 오른쪽 input 박스 - 오른쪽 모서리 둥글게 */}
+      <div className="flex-grow border border-gray-300 rounded-r-md bg-white px-3 py-2 flex items-center">
+        <input
+          id="username"
+          type="email"
+          value={username}
+          onChange={(e)=> setUsername(e.target.value)}
+          required
+          placeholder="이메일"
+          className="w-full focus:outline-none"
+        />
+      </div>
+    </div>
+
+  <div className="flex w-[300px] h-[55px] mb-10 shadow-md">
+  {/* 왼쪽 아이콘 박스 - 왼쪽 모서리 둥글게 */}
+  <div className="w-12 h-full flex items-center justify-center rounded-l-md bg-[#2D5E7E]">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        strokeWidth="1.5" stroke="white" className="w-5 h-5">
+      <path strokeLinecap="round" strokeLinejoin="round"
+            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 
+            11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 
+            2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 
+            2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+    </svg>
+  </div>
+
+  {/* 오른쪽 input 박스 - 오른쪽 모서리 둥글게 */}
+  <div className="flex-grow border border-gray-300 rounded-r-md bg-white px-3 py-2 flex items-center">
+    <input
+      id="password"
+      type="password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      placeholder="비밀번호"
+      className="w-full focus:outline-none"
+    />
+  </div>
+</div>
+
+            <button className="w-full py-2 bg-[#0E3C56] text-white rounded-md h-[60px] shadow-md">
+              로그인
+            </button>
+  
+            <button className="w-full py-2 border border-[#0E3C56] text-[#0E3C56] rounded-md h-[60px] shadow-md">
+              회원가입
+            </button>
+          </div>
+          </form>
+          {errorMsg && <p className="text-red-500 text-center mt-4">{errorMsg}</p>}
+          {successMsg && <p className="text-green-500 text-center mt-4">{successMsg}</p>}
         </div>
+      </div>
     );
 }
