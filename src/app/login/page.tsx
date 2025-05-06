@@ -57,7 +57,7 @@ export default function LoginPage() {
           </div>
       <form onSubmit={handleLogin}>
           <div className="space-y-6 ">
-          <div className="flex w-[300px] h-[55px] shadow-md">
+          <div className="flex w-full h-[55px] shadow-md">
       {/* 왼쪽 아이콘 박스 - 왼쪽 모서리 둥글게 */}
       <div className="w-12 h-full flex items-center justify-center rounded-l-md bg-[#2D5E7E]">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -86,7 +86,7 @@ export default function LoginPage() {
       </div>
     </div>
 
-  <div className="flex w-[300px] h-[55px] mb-10 shadow-md">
+  <div className="flex w-full h-[55px] mb-10 shadow-md">
   {/* 왼쪽 아이콘 박스 - 왼쪽 모서리 둥글게 */}
   <div className="w-12 h-full flex items-center justify-center rounded-l-md bg-[#2D5E7E]">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -124,7 +124,17 @@ export default function LoginPage() {
           </form>
           {errorMsg && <p className="text-red-500 text-center mt-4">{errorMsg}</p>}
           {successMsg && <p className="text-green-500 text-center mt-4">{successMsg}</p>}
+            <footer className=" py-6 mt-auto">
+                <div className="text-left text-sm text-gray-600">
+                    <p>Developed by 강동훈, 김다빈, 정민균</p>
+                    <p>Design by 이아라</p>
+                    <p>Supervised by Prof. 김대원 (Dankook University, Dept. of Computer Engineering)</p>
+                </div>
+            </footer>
+
         </div>
+
+
       </div>
     );
 }
