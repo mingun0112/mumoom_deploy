@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
-
+import InfoBox from './InfoBox';
+import { createRoot } from 'react-dom/client';
 import {
     APIProvider, Map, MapCameraChangedEvent, AdvancedMarker,
     Pin, useMap
@@ -166,16 +167,11 @@ export default function CustomeMap() {
                         position={poi.location}
                         // gmpClickable={true}
                         ref={marker => setMarkerRef(marker, poi.key)}
-                        onClick={()=>{
-                            console.log(poi.title)
+                        onClick={() => {
                             if (map && infoWindowRef.current) {
-                                const htmlContent = `
-                    <div style="max-width: 200px;">
-                        <h3 style="margin: 0 0 5px;">${poi.title}</h3>
-                        
-                    </div>
-                `;
-                                infoWindowRef.current.setContent(htmlContent);
+                                const container = document.createElement('div');
+                                createRoot(container).render(<InfoBox poi={poi} />);
+                                infoWindowRef.current.setContent(container);
                                 infoWindowRef.current.setPosition(poi.location);
                                 infoWindowRef.current.open(map);
                             }
