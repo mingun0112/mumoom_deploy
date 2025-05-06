@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -50,8 +51,9 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <div className="max-w-md mx-auto">
-          <div className="mb-15 h-30 flex items-center justify-center bg-gray-100 rounded">
-            <span className="text-gray-600">로고 삽입</span>
+          <div className="mb-15 h-30 flex items-center justify-center bg-white rounded">
+            {/*<span className="text-gray-600">로고 삽입</span>*/}
+              <Image src="/logo.jpg" width={300} height={300} alt="사이트 로고" />
           </div>
       <form onSubmit={handleLogin}>
           <div className="space-y-6 ">
