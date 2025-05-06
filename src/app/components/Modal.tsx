@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCamera, FaUpload, FaTimes } from "react-icons/fa";
 import RatingStars from "@/app/components/RatingStars";
+import Image from 'next/image'
 
 
 interface ModalProps {
@@ -26,9 +27,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [tagInput, setTagInput] = useState('');
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [allTags, setAllTags] = useState(['카페', '주차장', '야경', '뷰맛집']);
+    const [allTags, setAllTags] = useState(['']);
     const [rating, setRating] = useState(0);
     // const [allTags, setAllTags] = useState(['']);
+    // setAllTags(['카페', '주차장', '야경', '뷰맛집']);
     const filteredTags = allTags.filter(tag =>
         tag.includes(tagInput) && !selectedTags.includes(tag)
     );
@@ -52,7 +54,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     };
 
     useEffect(() => {
+        setAllTags(['카페', '주차장', '야경', '뷰맛집']);
         setIsMobile(/Mobi|Android/i.test(navigator.userAgent));
+
 
         // 위치 정보 가져오기 (한 번만 실행)
         navigator.geolocation.getCurrentPosition(
@@ -266,9 +270,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                         {/* 이미지 미리보기 */}
                         {previewUrl && (
                             <div className="mt-3">
-                                <img
+                                <Image
                                     src={previewUrl}
                                     alt="미리보기"
+                                    width={100}
+                                    height={100}
                                     className="w-full max-h-60 object-cover rounded border"
                                 />
                                 <p className="text-sm text-gray-600 mt-1">{imageFile?.name}</p>

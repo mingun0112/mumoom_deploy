@@ -33,6 +33,7 @@ export default function LoginPage() {
 
             // const token = data.token; // 서버에서 token을 JSON 응답으로 받는다고 가정
             setJwtToken(token); // 토큰 상태 업데이트
+            console.log(jwtToken)
             localStorage.setItem("token", token);
 
             // 콘솔에 JWT 토큰 출력

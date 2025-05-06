@@ -28,6 +28,12 @@ interface Poi {
     location: google.maps.LatLngLiteral;
     title: string;
 }
+interface PlaceDto {
+    latitude: number;
+    longitude: number;
+    placeTitle: string;
+    // other fields...
+};
 
 const distanceInKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // km
@@ -76,6 +82,7 @@ export default function CustomeMap() {
     useEffect(() => {
         if (!navigator.geolocation) {
             setTextContent("browser doesn't offers this function");
+            console.log(textContent);
         } else {
             const getCurrentLocation = async () => {
                 navigator.geolocation.getCurrentPosition(
@@ -90,7 +97,7 @@ export default function CustomeMap() {
                         try {
                             const places: resDto = await loadPlace(pos.lat, pos.lng);
                             console.log(places.poi);
-                            const placepoi: Poi[] = (places.poi || []).map((p: any) => ({
+                            const placepoi: Poi[] = (places.poi || []).map((p: PlaceDto) => ({
                                 key: Math.random().toString(36).substring(2, 10),
                                 location: { lat: p.latitude, lng: p.longitude },
                                 title: p.placeTitle,
@@ -197,7 +204,7 @@ export default function CustomeMap() {
                 try {
                     const places:resDto = await loadPlace(newCenter.lat, newCenter.lng);
                     console.log(places.poi);
-                    const placepoi:Poi[] = places.poi.map((p:any)=> ({
+                    const placepoi:Poi[] = places.poi.map((p:PlaceDto)=> ({
                         key:Math.random().toString(36).substring(2, 10),
                         location:{lat: p.latitude, lng: p.longitude},
                         title:p.placeTitle
@@ -219,7 +226,7 @@ export default function CustomeMap() {
     return (
         // <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <div className='w-full h-full'>
-            <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API} onLoad={() => console.log('Maps API has loaded.')}>
+            <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API!} onLoad={() => console.log('Maps API has loaded.')}>
                 {userCenter && (<Map
                     defaultZoom={15}
                     defaultCenter={userCenter}

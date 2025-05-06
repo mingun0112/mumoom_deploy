@@ -1,4 +1,3 @@
-import Image from "next/image";
 import NavButton from "./NavButton";
 
 export default function Nav() {

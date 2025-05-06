@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export default function RatingStars({ rating, onChange }: { rating: number; onChange: (value: number) => void }) {
     return (
         <div className="flex space-x-1">
