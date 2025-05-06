@@ -114,7 +114,7 @@ export default function LoginPage() {
               로그인
             </button>
   
-            <button className="w-full py-2 border border-[#0E3C56] text-[#0E3C56] rounded-md h-[60px] shadow-md">
+            <button onClick={()=>router.push("register")} className="w-full py-2 border border-[#0E3C56] text-[#0E3C56] rounded-md h-[60px] shadow-md">
               회원가입
             </button>
           </div>
