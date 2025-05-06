@@ -53,7 +53,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto">
           <div className="mb-15 h-30 flex items-center justify-center bg-white rounded">
             {/*<span className="text-gray-600">로고 삽입</span>*/}
-              <Image src="/logo.jpg" width={300} height={300} alt="사이트 로고" />
+              <Image src="/logo.jpg" width={100} height={100} className="rounded-xl" alt="사이트 로고" />
           </div>
       <form onSubmit={handleLogin}>
           <div className="space-y-6 ">
